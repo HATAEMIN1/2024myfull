@@ -1,0 +1,110 @@
+import React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+function LoginPage() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+  // const onSubmit = (data) => console.log(data);
+
+  function onSubmit({ email, name, password }) {
+    const body = {
+      email,
+      name,
+      password,
+    };
+    console.log(body);
+    toast.info("회원가입을 성공하였습니다");
+  }
+  const userEmail = {
+    required: { value: true, message: "이메일 필수" },
+    pattern: { value: /^\S+@\S+$/i, message: "이메일을 입력" },
+    minLength: {
+      value: 6,
+      message: "최소 6자입니다",
+    },
+  };
+  const userName = {
+    required: { value: true, message: "이름은 필수" },
+    minLength: {
+      value: 2,
+      message: "최소 2자입니다",
+    },
+  };
+
+  const userPassword = {
+    required: { value: true, message: "비밀번호는 필수" },
+    minLength: {
+      value: 4,
+      message: "최소 4자입니다",
+    },
+  };
+  return (
+    <>
+      <section className="flex max-w-[400px] rounded-md shadow-md m-auto mt-20 bg-white">
+        <div className="p-6  w-full  ">
+          <h2 className="text-center text-2xl font-semibold mb-4">로그인</h2>
+          <hr className="mb-4"></hr>
+
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="mb-4">
+              <label
+                htmlFor="email"
+                className="text-sm font-semibold text-gray-500 mb-3 flex"
+              >
+                이메일
+              </label>
+              <input
+                className="border w-full rounded-md p-2 text-xs"
+                type="text"
+                id="email"
+                placeholder="이메일을 입력하세요"
+                {...register("email", userEmail)}
+              />
+              {errors.email && (
+                <div className="text-red-500 text-xs mt-1">
+                  {errors.email.message}
+                </div>
+              )}
+
+              <div className="mb-1">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-semibold text-gray-500 mb-3 flex"
+                >
+                  비밀번호
+                </label>
+                <input
+                  className="border w-full rounded-md p-2 text-xs"
+                  type="password"
+                  id="name"
+                  placeholder="비밀번호를 입력하세요"
+                  {...register("password", userPassword)}
+                />
+                {errors.password && (
+                  <div className="text-red-500 text-xs mt-1">
+                    {errors.password.message}
+                  </div>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <button className="w-full bg-gray-800 rounded-md text-white py-2 hover:bg-slate-400">
+                  로그인
+                </button>
+              </div>
+              <div className="text-center text-xs">
+                아이디가 있다면 <a href="./register">회원가입</a>하세요
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </>
+  );
+}
+
+export default LoginPage;
