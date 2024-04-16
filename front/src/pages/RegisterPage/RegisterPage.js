@@ -74,7 +74,7 @@ function RegisterPage() {
   };
   return (
     <>
-      <section className="flex max-w-[400px] rounded-md shadow-md m-auto mt-20 bg-white">
+      <section className="flex max-w-[400px] rounded-md shadow-md m-auto mt-20 bg-white ">
         <div className="p-6  w-full  ">
           <h2 className="text-center text-2xl font-semibold mb-4">회원가입</h2>
           <hr className="mb-4"></hr>

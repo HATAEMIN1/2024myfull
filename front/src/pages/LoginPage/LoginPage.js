@@ -1,6 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import {useDispatch} from "react-redux";
+import {loginUser} from "../../store/thunkFunctions";
 function LoginPage() {
   const {
     register,
@@ -9,15 +11,15 @@ function LoginPage() {
     reset,
   } = useForm();
   // const onSubmit = (data) => console.log(data);
-
-  function onSubmit({ email, name, password }) {
+  const dispatch  = useDispatch()
+  async function onSubmit({ email, password }) {
     const body = {
       email,
-      name,
       password,
     };
-    console.log(body);
-    toast.info("회원가입을 성공하였습니다");
+
+    dispatch(loginUser(body))
+    reset()
   }
   const userEmail = {
     required: { value: true, message: "이메일 필수" },
@@ -25,13 +27,6 @@ function LoginPage() {
     minLength: {
       value: 6,
       message: "최소 6자입니다",
-    },
-  };
-  const userName = {
-    required: { value: true, message: "이름은 필수" },
-    minLength: {
-      value: 2,
-      message: "최소 2자입니다",
     },
   };
 
