@@ -36,11 +36,15 @@ userRouter.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(400).send({ error: "이메일을  확인해주세요" });
+      return res
+        .status(400)
+        .send({ error: "이메일을  확인해주세요", message: "이메일 확인하셈" });
     }
     const isMatch = await compare(req.body.password, user.password);
     if (!isMatch) {
-      return res.status(400).send({ error: "비밀번호 확인해주세요" });
+      return res
+        .status(400)
+        .send({ error: "비밀번호 확인해주세요", message: "비번 확인하셈" });
     }
 
     const payload = {
@@ -68,6 +72,14 @@ userRouter.get("/auth", auth, async (req, res) => {
       image: req.user.image,
     };
     return res.status(200).send({ user });
+  } catch (e) {
+    return res.status(500).send({ error: e.message });
+  }
+});
+
+userRouter.post("/logout", auth, async (req, res) => {
+  try {
+    return res.status(200).send({ message: "로그아웃 되셨습니다" });
   } catch (e) {
     return res.status(500).send({ error: e.message });
   }

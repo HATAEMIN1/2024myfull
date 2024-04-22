@@ -1,11 +1,23 @@
 import React from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../../store/thunkFunctions';
 
 function Navbar() {
+  const isAuth = useSelector((state) => state.user?.isAuth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  function handleLogout() {
+    dispatch(logoutUser()).then(() => {
+      navigate('/');
+    });
+  }
+
   const routes = [
     { to: '/login', name: '로그인', auth: false },
     { to: '/register', name: '회원가입', auth: false },
     { to: '/company', name: '회사소개', auth: true },
+    { to: '', name: '로그아웃', auth: true },
   ];
   return (
     <>
@@ -15,19 +27,37 @@ function Navbar() {
             <Link to='/'>COMPANY</Link>
           </h1>
           <ul className='flex'>
-            {routes.map((item, i) => {
-              return (
-                <>
-                  <li key={i}>
-                    <Link
-                      className=' h-full flex px-4 justify-center items-center'
-                      to={item.to}
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                </>
-              );
+            {routes.map(({ to, name, auth }) => {
+              if (isAuth !== auth) {
+                return null;
+              }
+              if (name === '로그아웃') {
+                return (
+                  <>
+                    <li key={name}>
+                      <Link
+                        onClick={handleLogout}
+                        className=' h-full flex px-4 justify-center items-center'
+                      >
+                        {name}
+                      </Link>
+                    </li>
+                  </>
+                );
+              } else {
+                return (
+                  <>
+                    <li key={name}>
+                      <Link
+                        className=' h-full flex px-4 justify-center items-center'
+                        to={to}
+                      >
+                        {name}
+                      </Link>
+                    </li>
+                  </>
+                );
+              }
             })}
           </ul>
         </div>
