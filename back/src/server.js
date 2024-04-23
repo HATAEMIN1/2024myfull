@@ -5,10 +5,12 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const userRouter = require("./routers/userRouter");
+const { blogRouter } = require("./routers/blogRouter");
+const { getFaker } = require("../faker");
 
 dotenv.config();
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 const server = async () => {
   try {
@@ -16,8 +18,10 @@ const server = async () => {
     console.log("mongoDB connected");
     mongoose.set("debug", true);
     app.use("/user", userRouter);
-    app.listen(4000, function () {
+    app.use("/blog", blogRouter);
+    app.listen(4000, async function () {
       console.log("server on port 4000");
+      // await getFaker(10, 2);
     });
   } catch (error) {
     console.log("연결이 안됐네요!!");

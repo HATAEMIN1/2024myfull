@@ -10,6 +10,8 @@ import FooterPage from './layout/Footer/FooterPage';
 import CompanyPage from './pages/CompanyPage/CompanyPage';
 import NotAuthRouter from './components/NotAuthRouter';
 import ProtectedRouter from './components/ProtectedRouter';
+import MainPage from './layout/Main/MainPage';
+import BlogListPage from './pages/BlogPage/BlogListPage';
 
 //Outlet => 요청하는 페이지를 가져옴
 function Layout() {
@@ -37,12 +39,14 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<Layout />}>
+          <Route index element={<MainPage />} />
           <Route element={<NotAuthRouter isAuth={isAuth} />}>
             <Route path='/login' element={<LoginPage />}></Route>
             <Route path='/register' element={<RegisterPage />}></Route>
           </Route>
           <Route element={<ProtectedRouter isAuth={isAuth} />}>
             <Route path='/company' element={<CompanyPage />}></Route>
+            <Route path='/blog' element={<BlogListPage />}></Route>
           </Route>
         </Route>
       </Routes>
